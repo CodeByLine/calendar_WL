@@ -1,0 +1,16 @@
+body {
+    padding: 50px 80px;
+    font-family: PT sans, sans-serif;
+    line-height: 2em;
+    size: 60px;
+  }
+  .starter-template {
+    padding: 40px 15px;
+    text-align: center;
+  }
+
+  .td {
+    height: 3px;
+
+  }
+  
