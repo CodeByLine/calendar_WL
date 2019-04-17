@@ -53,8 +53,8 @@
                     return;      
             
                 } else { 
-                    $username = htmlentities($_POST['email']);
-                    $_SESSION[$usnername] = $username;
+                    $email = htmlentities($_POST['email']);
+                    $_SESSION['email'] = $username;
                     $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
                     error_log("Login Success!", 0);
 

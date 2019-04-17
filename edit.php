@@ -2,9 +2,10 @@
     require_once "pdo.php";
     session_start();
 
-        if (!isset($_SESSION['email'])){
+    if (!isset($_SESSION['email'])){
             die("ACCESS DENIED");
-          }
+    
+    } else { 
 
         if ( isset($_POST['cancel']) ) {
             header('Location: index.php');
@@ -83,6 +84,7 @@
         $d = htmlentities($row['eventdate']);
         $n = htmlentities($row['eventnote']);
         $event_id = $row['event_id'];
+}
            
         // Flash pattern
         // if ( isset($_SESSION['error']) ) {

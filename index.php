@@ -7,65 +7,29 @@
         unset($_SESSION['message']);
     }
 
-    if ( isset($_POST['logout']) ) {
-        unset($_SESSION['email']);
-        header('Location: index.php');
-        return;
-    }
+    if (isset($_SESSION['email'])){
 
-    if ( isset($_SESSION['error'])) {
-        echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
-        unset($_SESSION['error']);
-    }
+        echo( '<a href="add.php">'."Add New Entry".'</a>' ."&nbsp; | &nbsp; " .'<a href="logout.php">'."Logout".'</a> </p>');            
 
-    if ( isset($_SESSION['success'])) {
-        echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
-        unset($_SESSION['success']);
-    }
+            if ( isset($_POST['logout']) ) {
+                unset($_SESSION['email']);
+                header('Location: index.php');
+                return;
+            }
 
-    if ( isset($_POST['edit']) && isset($_POST['event_id']) ) {
-        $stmt = $pdo->prepare("SELECT * FROM events where event_id = :xyz");
-        // $stmt->execute(array(":xyz" => $_GET['event_id']));
-        $stmt->execute(array(":xyz" => (int)$_GET['event_id']));
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ( isset($_SESSION['error'])) {
+                echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
+                unset($_SESSION['error']);
+            }
+
+            if ( isset($_SESSION['success'])) {
+                echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
+                unset($_SESSION['success']);
+            }
+            }
 
 
-        if ( $row === false ) {
-            $_SESSION['error'] = 'Bad value for event_id';
-            header( 'Location: index.php' ) ;
-            return;
-
-        } else { 
-
-            $sql = "UPDATE events SET eventname = :eventname,
-                    eventdate = :eventdate, eventnote = :eventnote
-                    WHERE event_id = :event_id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(array(
-                ':eventname' => htmlentities($_POST['eventname']),
-                ':eventdate' => htmlentities($_POST['eventdate']),
-                ':eventnote' => htmlentities($_POST['eventnote'])));
-
-            $_SESSION['success'] = 'Event information updated';
-            header( 'Location: index.php' ) ;
-            return;
-        }
-    }
-
-    if ( isset($_POST['delete']) && isset($_POST['event_id']) ) {
-        $sql = "DELETE FROM events WHERE event_id = :zip";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':zip' => (int)$_POST['event_id']));
-        $_SESSION['success'] = 'Record deleted';
-
-      
-
-        header( 'Location: index.php' ) ;
-        return;
-    }
-
-    $errors = [];
-    $success = [];
+ 
 
 ?>
 
@@ -104,64 +68,19 @@
     </style>
 
     <?php   
-        if (isset($_SESSION['email'])){
-            echo('<p style="color: green;">'."Logged in."."</p>\n"); 
+ 
 
-
-            echo("Please remember to " . '<a href="logout.php">logout. </a>'."</p>\n");
-
-            error_log("Login success.", 0);
-            unset($_SESSION['success']);
-            // `event_id`, ``, ``, ``
-            $stmt = $pdo->query("SELECT event_id, eventname, eventdate, eventnote FROM events");
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->query("SELECT event_id, eventname, eventdate, eventnote FROM events");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
       
             if ($rows == false) {
                 echo("No event found here");
             } else {
       
-                foreach ( $rows as $row ) {
-                    echo('<table class="table table-striped"  border="1">'."\n");
-                   echo "<tr><td>";
-                //    echo "&lt;b&gt;"; 
-                   echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
-                //    echo "&lt;/b&gt;"; 
-                   echo("</td><td>");
-                   echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));
-                   echo("</td><td>");
-                   echo(htmlentities($row['eventnote']).("&nbsp; &nbsp;"));
-                   echo("</td><td>");
-                   echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');
-                   echo("</td><td>");
-                //    form not needed
 
-                echo ('<a href="delete.php?event_id='.$row['event_id'].'">Delete</a>');
- 
-                   echo("</td></tr>\n");
-
-                echo('</table');
-                
-                } 
-            }
-            
-            // echo ('<p><a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p>');
-
-    
-        } else {
-            echo ('<p> <a href="login.php">Admin: Please log in</a></p>');
-
-            $stmt = $pdo->query("SELECT * FROM events ORDER BY `events`.`eventdate`  ASC");
-
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      
-            if ($rows == false) {
-                echo("No such event found.");
-            } else {
-               
                 foreach ( $rows as $row ) {
                     echo('<table class="table table-striped" border="1" >'."\n");
-                
-                   echo("<tr><td>");
+                   echo "<tr><td>";
                 //    echo "&lt;b&gt;"; 
                    echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));
                 //    echo "&lt;/b&gt;"; 
@@ -169,19 +88,26 @@
                    echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
                    echo("</td><td>");
                    echo(htmlentities($row['eventnote']).("&nbsp; &nbsp;"));
+                   echo("</td><td>");
+                   
+                   echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');                  
+                    echo("</td><td>");
+
+                echo ('<a href="delete.php?event_id='.$row['event_id'].'">Delete</a>');
+
 
                    echo("</td></tr>\n");
                 echo('</table');
+  
                 
                 } 
-            }
 
         }
     ?>
     <br>
     <br>
 
-<a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p>
+<!-- <a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p> -->
 
     </div>  
 </body>
