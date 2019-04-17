@@ -6,7 +6,7 @@
     $success = [];
 
 
-    if (!empty($_SESSION)){
+    // if (!empty($_SESSION)){
 
         if (!isset($_SESSION['email'])){
             die("ACCESS DENIED");
@@ -31,7 +31,7 @@
             return;
         }
     
-    }
+    
 
  ?>
 
@@ -64,15 +64,9 @@
             echo('<p style="color: green;">'."Logged in"."</p>\n");
             error_log("Login success.", 0);
             unset($_SESSION['success']);
-            
-            // $stmt = $pdo->query("SELECT * FROM events WHERE event_id = :xyz");
-            // $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);  //NOT
 
-            // $stmt = $pdo->query("SELECT event_id, eventname, eventdate, eventnote FROM events");
-
-
-            $stmt = $pdo->query("SELECT * FROM events ORDER BY `events`.`eventdate`  ASC");
-
+            $sql = "SELECT * FROM events ORDER BY `events`.`eventdate`  ASC";
+            $stmt = $pdo->query($sql);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
       
             if ($rows == false) {
@@ -103,10 +97,10 @@
             }
         }
 
-        else {
+        // else {
 
-            echo("hello");
-        }
+        //     echo("hello");
+        // }
 
      
  

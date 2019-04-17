@@ -1,0 +1,1 @@
+A simple webpage for displaying events calendar.

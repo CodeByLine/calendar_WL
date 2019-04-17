@@ -70,7 +70,7 @@
     }
     
         $stmt = $pdo->prepare("SELECT * FROM events where event_id = :xyz");
-        $stmt->execute(array(":xyz" => $_GET['event_id'])); 
+        $stmt->execute(array(":xyz" => (int)$_GET['event_id'])); 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row == false) {
             $_SESSION['error'] = 'Something is wrong here-is this the right event?';

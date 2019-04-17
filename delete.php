@@ -30,7 +30,7 @@
       $stmt->execute(array(":xyz" => $_GET['event_id']));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       if ( $row === false ) {
-          $_SESSION['error'] = 'Event information entered incorrectlu';
+          $_SESSION['error'] = 'Event information incorrect';
           header( 'Location: index.php' ) ;
           return;
       }
@@ -54,7 +54,7 @@
 
 <div class="container">
 
-  <p class="alert-danger">Confirm: Deleting <?= htmlentities($row['event_id'])."?"; ?></p>
+  <p class="alert-danger">Confirm: Deleting event "<?= htmlentities($row['eventname'])."?"; ?>"</p>
 
   <form method="post">
     <input type="hidden" name="event_id" value="<?= ($row['event_id']); ?>">

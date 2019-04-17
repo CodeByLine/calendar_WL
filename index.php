@@ -25,33 +25,40 @@
 
     if ( isset($_POST['edit']) && isset($_POST['event_id']) ) {
         $stmt = $pdo->prepare("SELECT * FROM events where event_id = :xyz");
-        $stmt->execute(array(":xyz" => $_GET['event_id']));
+        // $stmt->execute(array(":xyz" => $_GET['event_id']));
+        $stmt->execute(array(":xyz" => (int)$_GET['event_id']));
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
         if ( $row === false ) {
             $_SESSION['error'] = 'Bad value for event_id';
             header( 'Location: index.php' ) ;
             return;
-        }
-        $sql = "UPDATE cal SET eventname = :eventname,
-                eventdate = :eventdate, eventnote = :eventnote
-                WHERE event_id = :event_id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(
-            ':eventname' => $_POST['eventname'],
-            ':eventdate' => $_POST['eventdate'],
-            ':eventnote' => $_POST['eventnote']));
 
-        $_SESSION['success'] = 'Event information updated';
-        header( 'Location: index.php' ) ;
-        return;
+        } else { 
+
+            $sql = "UPDATE events SET eventname = :eventname,
+                    eventdate = :eventdate, eventnote = :eventnote
+                    WHERE event_id = :event_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ':eventname' => htmlentities($_POST['eventname']),
+                ':eventdate' => htmlentities($_POST['eventdate']),
+                ':eventnote' => htmlentities($_POST['eventnote'])));
+
+            $_SESSION['success'] = 'Event information updated';
+            header( 'Location: index.php' ) ;
+            return;
+        }
     }
 
     if ( isset($_POST['delete']) && isset($_POST['event_id']) ) {
         $sql = "DELETE FROM events WHERE event_id = :zip";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':zip' => $_POST['event_id']));
+        $stmt->execute(array(':zip' => (int)$_POST['event_id']));
         $_SESSION['success'] = 'Record deleted';
+
+      
 
         header( 'Location: index.php' ) ;
         return;
@@ -98,7 +105,11 @@
 
     <?php   
         if (isset($_SESSION['email'])){
-            echo('<p style="color: green;">'."Logged in"."</p>\n");
+            echo('<p style="color: green;">'."Logged in."."</p>\n"); 
+
+
+            echo("Please remember to " . '<a href="logout.php">logout. </a>'."</p>\n");
+
             error_log("Login success.", 0);
             unset($_SESSION['success']);
             // `event_id`, ``, ``, ``
@@ -110,7 +121,7 @@
             } else {
       
                 foreach ( $rows as $row ) {
-                    echo('<table border="1">'."\n");
+                    echo('<table class="table table-striped"  border="1">'."\n");
                    echo "<tr><td>";
                 //    echo "&lt;b&gt;"; 
                    echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
@@ -133,10 +144,11 @@
                 } 
             }
             
-            echo ('<p><a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p>');
+            // echo ('<p><a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p>');
+
     
         } else {
-            echo ('<p> <a href="login.php">Please log in</a></p>');
+            echo ('<p> <a href="login.php">Admin: Please log in</a></p>');
 
             $stmt = $pdo->query("SELECT * FROM events ORDER BY `events`.`eventdate`  ASC");
 
@@ -148,7 +160,8 @@
                
                 foreach ( $rows as $row ) {
                     echo('<table class="table table-striped" border="1" >'."\n");
-                   echo "<tr><td>";
+                
+                   echo("<tr><td>");
                 //    echo "&lt;b&gt;"; 
                    echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));
                 //    echo "&lt;/b&gt;"; 
@@ -165,9 +178,12 @@
 
         }
     ?>
+    <br>
+    <br>
 
+<a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p>
 
-            
+    </div>  
 </body>
 </html>
 
