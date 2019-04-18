@@ -51,7 +51,7 @@
     <br>
         <h3><center>Summer 2019</center></h3>
 
-    <br>
+    <br> <a href="login.php">Login</a>
    <br>
 
 

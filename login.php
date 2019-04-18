@@ -17,55 +17,81 @@
         return;
     }
 
-    if ( isset($_POST['email']) && isset($_POST['pass']) ) {
+    if ( isset($_POST['email']) && isset($_POST['password']) ) {
         
-        $email = $_POST['email'];
-        $password = $_POST['pass'];
+        $email = htmlentities($_POST['email']);
+        $password = htmlentities($_POST['password']);
+        
         
         if ( strlen($email) < 1 || strlen($password) < 1 ) {
             
             $_SESSION['message'] = "<p style = 'color:red'>username and password are required.</p>\n";
             error_log("Username and password are required.", 0);
             header("Location: login.php");
+            return;    
+        } 
+        
+        $atsign = strpos($email, '@');
+        if ($atsign == false) {
+
+            $_SESSION['message'] = "<p style = 'color:red'>Did you enter the correct email address?</p>\n";
+            // error_log("Username must have an at-sign (@).", 0);
+            error_log("Did you enter the correct email address?");
+            header("Location: login.php");
             return;
-         
-        } else { 
 
-            $atsign = strpos($email, '@');
-            
-            if ($atsign == false) {
+            } else { 
+                // SELECT * FROM users	 WHERE email = 'nam@umich.edu';
+            //    $sql = "SELECT * FROM users WHERE email =  and password = 'php123'";
 
-                $_SESSION['message'] = "<p style = 'color:red'>Did you enter the correct email address?</p>\n";
-                // error_log("Username must have an at-sign (@).", 0);
-                error_log("Did you enter the correct email address?");
-                header("Location: login.php");
-                return;
-            
-            } else {
-                $salt = 'XyZzy12*_';
-                $stored_hash = '1a52e17fa899cf40fb04cfc42e6352f1';  // Pw is php123
 
-                $check = hash('md5', $salt.$password);
-                if ( $check !== $stored_hash ) {  
-                    $_SESSION['message'] = "<p style = 'color:red'>Incorrect password.</p>\n";
-                    error_log("Incorrect password.", 0);
-                    header("Location: login.php");
-                    return;      
-            
-                } else { 
-                    $username = $_POST['email'];
-                    $_SESSION['email'] = $username;
-                    $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
-                    error_log("Login Success!", 0);
+               $stmt = $pdo->prepare("SELECT * FROM users where email = :xyz");
+               $stmt->execute(array(
+                   ":xyz" => $email)); 
+   
+               $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                // $count = $stmt->rowCount();
+                // print_r($count);
 
-                    header("Location: view.php" );
-                    // echo "<p style = 'color:green'>Login success.</p>\n";
 
-                    return;           
-                }
-            }   
-        }  
+// if (($row[email] == $email) && ($row[password] == $password)) {
+                 
+    if ($row == false)  {
+        $_SESSION['error'] = "User or password incorrect";
+        $_SESSION['message'] = "<p style = 'color:red'>User or password incorrect.</p>\n";
+        header('Location: login.php');
+        return;
+
+    } else {
+
+    // $salt = 'XyZzy12*_';
+    // $stored_hash = '1a52e17fa899cf40fb04cfc42e6352f1';  // Pw is php123
+    // $check = hash('md5', $salt.$password);
+
+    // if ( $check !== $stored_hash ){  
+    //  $_SESSION['message'] = "<p style = 'color:red'>Incorrect password.</p>\n";
+    //       error_log("Incorrect password.", 0);
+    //       header("Location: login.php");
+    //       return;      
+    // } else { 
+        
+        $email = htmlentities($_POST['email']);
+            $_SESSION['email'] = $email;
+            $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
+            error_log("Login Success!", 0);
+
+            header("Location: view.php" );
+            // echo "<p style = 'color:green'>Login success.</p>\n";
+
+            return;           
+        }
+// }
+               
+
     }
+
+}
 
 // Fall through into the View
 ?>
@@ -97,7 +123,7 @@
         <label for="email">User Name</label>
         <input type="text" name="email" id="email" size="20" value="<?=htmlentities('');?>" > <br>
         <label for="id_1723">Password</label>
-        <input type="password" name="pass" id="id_1723">
+        <input type="password" name="password" id="id_1723" value="<?=htmlentities('');?>">
         <input type="submit" value="Log In" >
         <input type="submit" name="cancel" value="Cancel">
         <br>
