@@ -17,10 +17,10 @@
         return;
     }
 
-    if ( isset($_POST['email']) && isset($_POST['password']) ) {
+    if ( isset($_POST['email']) && isset($_POST['pass']) ) {
         
-        $email = htmlentities($_POST['email']);
-        $password = htmlentities($_POST['password']);
+        $email = $_POST['email'];
+        $password = $_POST['pass'];
         
         if ( strlen($email) < 1 || strlen($password) < 1 ) {
             
@@ -53,12 +53,12 @@
                     return;      
             
                 } else { 
-                    $email = htmlentities($_POST['email']);
+                    $username = $_POST['email'];
                     $_SESSION['email'] = $username;
                     $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
                     error_log("Login Success!", 0);
 
-                    header("Location: index.php" );
+                    header("Location: view.php" );
                     // echo "<p style = 'color:green'>Login success.</p>\n";
 
                     return;           
@@ -97,7 +97,7 @@
         <label for="email">User Name</label>
         <input type="text" name="email" id="email" size="20" value="<?=htmlentities('');?>" > <br>
         <label for="id_1723">Password</label>
-        <input type="password" name="password" id="id_1723" value= "<?=htmlentities('');?>">
+        <input type="password" name="pass" id="id_1723">
         <input type="submit" value="Log In" >
         <input type="submit" name="cancel" value="Cancel">
         <br>

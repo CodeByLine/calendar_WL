@@ -26,10 +26,7 @@
                 echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
                 unset($_SESSION['success']);
             }
-            }
-
-
- 
+        }
 
 ?>
 
@@ -50,8 +47,10 @@
 <body>
 
 <div class="container">
-    <h1><center>Welcome to Wolf Lake's Events Calendar </center></h1>
-    <!-- <h1>Event Listing for <?php echo htmlentities($_SESSION["email"]); ?></h1> -->
+    <h1><center>Wolf Lake's Events Calendar </center></h1>
+    <br>
+        <h3><center>Summer 2019</center></h3>
+
     <br>
    <br>
 
@@ -88,26 +87,16 @@
                    echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
                    echo("</td><td>");
                    echo(htmlentities($row['eventnote']).("&nbsp; &nbsp;"));
-                   echo("</td><td>");
-                   
-                   echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');                  
-                    echo("</td><td>");
-
-                echo ('<a href="delete.php?event_id='.$row['event_id'].'">Delete</a>');
-
 
                    echo("</td></tr>\n");
                 echo('</table');
   
-                
-                } 
+          } 
 
         }
     ?>
     <br>
     <br>
-
-<!-- <a href="add.php">Add New Entry</a> &nbsp; | &nbsp; <a href="logout.php">Logout</a> </p> -->
 
     </div>  
 </body>
