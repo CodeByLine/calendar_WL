@@ -79,16 +79,6 @@
                 }    
                 
  
-        
-        
-
-//             header("Location: view.php" );
-//             // echo "<p style = 'color:green'>Login success.</p>\n";
-
-//             return;           
-//         }
-// // }
-               
 
     }
 
