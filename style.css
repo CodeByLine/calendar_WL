@@ -1,4 +1,4 @@
-body {
+/* body {
     padding: 50px 80px;
     font-family: PT sans, sans-serif;
     line-height: 2em;
@@ -10,7 +10,6 @@ body {
   }
 
   .td {
-    height: 3px;
+    /* height: 3px; */
 
-  }
-  
+  /* } */

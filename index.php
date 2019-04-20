@@ -2,30 +2,32 @@
     require_once "pdo.php";
     session_start();
 
+    if (isset($_SESSION['email'])){
+
     if (!empty($_SESSION['message'])) {
         echo $_SESSION['message'];
         unset($_SESSION['message']);
     }
 
-    if (isset($_SESSION['email'])){
+    // if (isset($_SESSION['email'])){
 
-        echo( '<a href="add.php">'."Add New Entry".'</a>' ."&nbsp; | &nbsp; " .'<a href="logout.php">'."Logout".'</a> </p>');            
+    //     echo( '<a href="add.php">'."Add New Entry".'</a>' ."&nbsp; | &nbsp; " .'<a href="logout.php">'."Logout".'</a> </p>');            
 
-            if ( isset($_POST['logout']) ) {
-                unset($_SESSION['email']);
-                header('Location: index.php');
-                return;
-            }
+    //         if ( isset($_POST['logout']) ) {
+    //             unset($_SESSION['email']);
+    //             header('Location: index.php');
+    //             return;
+    //         }
 
-            if ( isset($_SESSION['error'])) {
-                echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
-                unset($_SESSION['error']);
-            }
+    //         if ( isset($_SESSION['error'])) {
+    //             echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
+    //             unset($_SESSION['error']);
+    //         }
 
-            if ( isset($_SESSION['success'])) {
-                echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
-                unset($_SESSION['success']);
-            }
+    //         if ( isset($_SESSION['success'])) {
+    //             echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
+    //             unset($_SESSION['success']);
+    //         }
         }
 
 ?>
@@ -51,10 +53,10 @@
     <br>
         <h3><center>Summer 2019</center></h3>
 
-    <br> <a href="login.php">Login</a>
+    <!-- <br> <a href="login.php">Login</a> -->
    <br>
 
-
+<br>
    <style>
         table, th, td {
         border: 1px solid black;
@@ -62,7 +64,8 @@
         }
         th, td {
         padding: 10px;
-        }
+        } 
+       
         
     </style>
 
@@ -78,7 +81,7 @@
       
 
                 foreach ( $rows as $row ) {
-                    echo('<table class="table table-striped" border="1" >'."\n");
+                    echo('<table class="table table-striped" >'."\n");
                    echo "<tr><td>";
                 //    echo "&lt;b&gt;"; 
                    echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));

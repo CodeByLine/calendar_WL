@@ -8,12 +8,12 @@
     } else { 
 
         if ( isset($_POST['cancel']) ) {
-            header('Location: index.php');
+            header('Location: view.php');
             return; }    
 
         if ( isset($_POST['logout']) ) {
             unset($_SESSION['email']);
-            header('Location: index.php');
+            header('Location: view.php');
             return; }
       
         if (!empty($_SESSION['message'])) {
@@ -65,7 +65,7 @@
             $_SESSION["success"] = "Event information updated";
             // $_SESSION["message"] = "Record added";
             error_log("Record added.", 0);
-            header("Location: index.php");
+            header("Location: view.php");
             return;   
         } 
     }
@@ -75,7 +75,7 @@
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row == false) {
             $_SESSION['error'] = 'Something is wrong here-is this the right event?';
-            header('Location: index.php');
+            header('Location: view.php');
             // header("Location: edit.php?event_id=".$_REQUEST['id']);
             return;
     }

@@ -9,18 +9,21 @@
     // if (!empty($_SESSION)){
 
         if (!isset($_SESSION['email'])){
-            die("ACCESS DENIED");
+            // die("ACCESS DENIED");
+            header('Location: index.php');
+            return;
           }
+
+        if (!empty($_SESSION['message'])) {
+            echo $_SESSION['message'];
+            unset($_SESSION['message']);
+        }      
 
         if ( isset($_POST['logout']) ) {
             unset($_SESSION['email']);
             header('Location: index.php');
             return; }
-      
-        if (!empty($_SESSION['message'])) {
-            echo $_SESSION['message'];
-            unset($_SESSION['message']);
-        }  
+    
         
         if ( isset($_POST['delete']) && isset($_POST['event_id']) ) {
             $sql = "DELETE FROM events WHERE autos_id = :zip";
@@ -62,8 +65,10 @@
      <?php
         if (isset($_SESSION['email'])){
             echo('<p style="color: green;">'."Logged in"."</p>\n");
+            echo('<p>'."Don't forget to ".'<a href="logout.php">' ."Logout" .'</a>'."</p>\n");
             error_log("Login success.", 0);
             unset($_SESSION['success']);
+            
 
             $sql = "SELECT * FROM events ORDER BY `events`.`eventdate`  ASC";
             $stmt = $pdo->query($sql);
@@ -76,9 +81,9 @@
                 foreach ( $rows as $row ) {
                     echo('<table class="table table-striped" border="1" >'."\n");
                    echo "<tr><td>";
-                //    echo "&lt;b&gt;"; 
+                   
                    echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));
-                //    echo "&lt;/b&gt;"; 
+             
                    echo("</td><td>");
                    echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
                    echo("</td><td>");

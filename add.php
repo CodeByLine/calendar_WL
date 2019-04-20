@@ -4,6 +4,9 @@
 
         if (!isset($_SESSION['email'])){
             die("ACCESS DENIED");
+            header("Location: index.php");
+            return;
+
           }
 
         if ( isset($_POST['logout']) ) {
@@ -19,6 +22,7 @@
     $errors = [];
     $success = [];
 
+    
     // Flash pattern
     // if ( isset($_SESSION['error']) ) {
     //     echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
@@ -50,7 +54,36 @@
             return;
 
          }
+
+        //  if (!checkdate($_POST['eventdate'])) {
+        //     if (date_format($_POST[
+        //         'eventdate'], 'Y-m-d H:i'.' ') == false) {
+        //     $_SESSION['message'] = "<p style = 'color:red'>Date and time must be in the specific format (see note).</p>\n";
+        //     header("Location: add.php");
+        //     return;
+        //  }
+
+        // $sql = "SELECT `eventdate` FROM `events`";
+        // $stmt = $pdo->prepare($sql);
+        // $row = $stmt ->execute(array());
+        $dt = ($_POST['eventdate']);
+        function validateDate($dt, $format = 'Y-m-d H:i:s')
+        {
+            $d = DateTime::createFromFormat($format, $dt);
+            return $d && $d->format($format) == $dt;
+        }
         
+        // var_dump(validateDate('2012-02-28 12:12:12')); # true
+        // var_dump(validateDate('2012-02-30 12:12:12')); # false
+            $val = validateDate($dt);
+            if ($val==false) {
+            //     if (date_format($_POST[
+            //         'eventdate'], 'Y-m-d H:i'.' ') == false) {
+                $_SESSION['message'] = "<p style = 'color:red'>Date and time must be in the specific format (see note).</p>\n";
+                header("Location: add.php");
+                return;
+             }
+            
 
     if (!$errors) {
         
@@ -70,7 +103,7 @@
             $_SESSION["success"] = "Record added";
             //   $_SESSION["message"] = "Event added"; 
               error_log("Event added.", 0);
-              header("Location: index.php");
+              header("Location: view.php");
               return;
     }
 
@@ -88,6 +121,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+
+
 </head>
 <body>
 
@@ -99,7 +134,9 @@
         <p>Event Name: &nbsp; &nbsp; 
         <input type="text" name="eventname" size="30" value="<?=htmlentities('');?>"></p>
         <p>Event Date: &nbsp; 
-        <input type="datetime" name="eventdate" size="30" value="<?=htmlentities('');?>"></p>
+      
+        <input type="datetime" name="eventdate"  id="datetime" size="30" value="<?=htmlentities('');?>"></p>
+        
         <p>Additional Notes: &nbsp; &nbsp; &nbsp; 
         <input type="text" name="eventnote" value="<?=htmlentities('');?>"></p>
         
@@ -112,8 +149,10 @@
     &nbsp; &nbsp; &nbsp;  | &nbsp; &nbsp; &nbsp;
     <a href="view.php">View Event List</a>
 
+
+
   <br><br>
-    <h6 style="color: red">Note the date/time format: 2019-08-30 00:18:00 </h6>
+  <p> Note: The date/time must be entered as <span style='color: red'> 2019-08-30 00:18:00  </span> (YYYY-MM-DD HH-MM-SS). Don't forget entering "00" for seconds. </p>
 
 </div>
 </body>

@@ -5,6 +5,7 @@
 
     if (!isset($_SESSION['email'])){
         die("ACCESS DENIED");
+        header( 'Location: index.php' ) ;
     }
 
 
@@ -14,15 +15,15 @@
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':zip' => $_POST['event_id']));
         $_SESSION['success'] = 'Record deleted';
-        header( 'Location: index.php' ) ;
+        header( 'Location: view.php' ) ;
         return;
     }
 
 
-      // Guardian: Make sure that user_id is present
+      // Guardian: Make sure that event_id is present
       if ( ! isset($_GET['event_id']) ) {
         $_SESSION['error'] = "Event not listed";
-        header('Location: index.php');
+        header('Location: view.php');
         return;
       }
 
@@ -31,7 +32,7 @@
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       if ( $row === false ) {
           $_SESSION['error'] = 'Event information incorrect';
-          header( 'Location: index.php' ) ;
+          header( 'Location: view.php' ) ;
           return;
       }
 
