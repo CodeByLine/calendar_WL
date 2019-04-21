@@ -8,7 +8,9 @@
         echo $_SESSION['message'];
         unset($_SESSION['message']);
     }
-
+    
+    $len = strlen("$2y$10$hLwZDXw0jTBzvUpzrEYBO.hYYYwKztaIrHVPoFQcgvsxFImrDERv2");
+    echo $len;
     // if (isset($_SESSION['email'])){
 
     //     echo( '<a href="add.php">'."Add New Entry".'</a>' ."&nbsp; | &nbsp; " .'<a href="logout.php">'."Logout".'</a> </p>');            

@@ -3,6 +3,7 @@
     session_start();
     require_once "pdo.php";
     
+    
     if (!empty($_SESSION['message'])) {
         echo $_SESSION['message'];
         unset($_SESSION['message']);
@@ -34,53 +35,106 @@
         $atsign = strpos($email, '@');
         if ($atsign == false) {
 
-            $_SESSION['message'] = "<p style = 'color:red'>Did you enter the correct email address?</p>\n";
+            $_SESSION['message'] = "<p style = 'color:red'>SECRET: Did you enter the correct email address?</p>\n";
             // error_log("Username must have an at-sign (@).", 0);
             error_log("Did you enter the correct email address?");
             header("Location: login.php");
             return;
 
-            } else { 
-  
-                function sqlPassword($password) {
-                    $pass = strtoupper(
-                            sha1(
-                                    sha1($password, true)
-                            )
-                    );
-                    $pass = '*' . $pass;
-                    return $pass;
-                }
-        
-                $newpass = sqlPassword($password);
+            } else {      
 
-                $stmt = $pdo->prepare("SELECT  `password`  FROM `users` WHERE password = :uvw");
+            // $newpass = password_hash($password, PASSWORD_DEFAULT);
+            $newpass = $password;
+
+            $stmt = $pdo->prepare("SELECT  `email`, 'password'  FROM `users` 
+                WHERE email = :uvw,
+                      password = :xyz");
+
+            $stmt->execute(array(
+
+                ":uvw" => $email,
+                "xyz" => $password)); 
+               
+            //    var_dump($stmt);
+            // var_dump($row);
+            // $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // // $old_pass = $row['password'];
+            // // print_r ($row);
+            // $check = $row['password'];
+            // if ($check == $password) {
+                // if (password_verify($password, PASSWORD_DEFAULT)) {
+                
+            //     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            //     $check = $row['password'];
+                if ($row) {
+            // if ($newpass == $check) { 
+                // $email = htmlentities($_POST['email']);
+                // $_SESSION['email'] = $email;
+                $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
+                error_log("Login Success!", 0);
+                header("Location: view.php" );
+                return;
+
+            } else {
+                // echo $newpass;  
+                
+                //$2y$10$AROZauV7praHvYVyzR2/m.DVHuWHJnB9DFaqC7L66z3ogL.lu9XoW
+                
+                // echo ("hhhh");
+                // var_dump( $old_pass);
+                echo 'Invalid password.';
+                $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
+                header("Location: login.php" );
+                return;
+                
+            }    
+
+
+
+            }
+
+
+
+    // Below: Working  
+    //             function sqlPassword($password) {
+    //                 $pass = strtoupper(
+    //                         sha1(
+    //                                 sha1($password, true)
+    //                         )
+    //                 );
+    //                 $pass = '*' . $pass;
+    //                 return $pass;
+    //             }
+      
+    //             $newpass = sqlPassword($password);
+
+    //             $stmt = $pdo->prepare("SELECT  `password`  FROM `users` WHERE password = :uvw");
             
-                $stmt->execute(array(
+    //             $stmt->execute(array(
 
-                    ":uvw" => $newpass)); 
+    //                 ":uvw" => $newpass)); 
                     
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $check = $row['password'];
+    //                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    //                 $check = $row['password'];
         
-                if ($newpass == $check) { 
-                    $email = htmlentities($_POST['email']);
-                    $_SESSION['email'] = $email;
-                    $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
-                    error_log("Login Success!", 0);
-                    header("Location: view.php" );
-                    return;
+    //             if ($newpass == $check) { 
+    //                 $email = htmlentities($_POST['email']);
+    //                 $_SESSION['email'] = $email;
+    //                 $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
+    //                 error_log("Login Success!", 0);
+    //                 header("Location: view.php" );
+    //                 return;
         
-                } else {
-                    echo 'Invalid password.';
-                    $_SESSION['message'] = "<p style = 'color:red'> Password incorrect.</p>\n";
-                    header("Location: login.php" );
-                    return;
-                }    
+    //             } else {
+    //                 echo 'Invalid password.';
+    //                 $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
+    //                 header("Location: login.php" );
+    //                 return;
+    //             }    
                 
  
 
-    }
+    // }
 
 }
 
