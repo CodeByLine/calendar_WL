@@ -43,45 +43,40 @@
 
             } else {      
 
-            // $newpass = password_hash($password, PASSWORD_DEFAULT);
-            $newpass = $password;
+            $newpass = password_hash($password, PASSWORD_DEFAULT);
+       
 
-            $stmt = $pdo->prepare("SELECT  `email`, 'password'  FROM `users` 
-                WHERE email = :uvw,
-                      password = :xyz");
+            $stmt = $pdo->prepare("SELECT  `password` FROM `users` WHERE email = :uvw");
 
-            $stmt->execute(array(
+             $stmt->execute(array(
 
-                ":uvw" => $email,
-                "xyz" => $password)); 
-               
-            //    var_dump($stmt);
-            // var_dump($row);
-            // $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            // // $old_pass = $row['password'];
-            // // print_r ($row);
+                ":uvw" => $email));
+            // //     "xyz" => $password)); 
+    
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $results = $row ['password'];
+                //     $results = $row;
+                echo($results);
+                echo($password);
+                echo($newpass);
+            //     print_r ($results);
+                // var_dump($row);
+            // print_r($stmt);
+            // $old_pass = $row['email'].'password';
+            // print_r ($row);
             // $check = $row['password'];
-            // if ($check == $password) {
-                // if (password_verify($password, PASSWORD_DEFAULT)) {
-                
-            //     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            //     $check = $row['password'];
-                if ($row) {
-            // if ($newpass == $check) { 
-                // $email = htmlentities($_POST['email']);
-                // $_SESSION['email'] = $email;
+            // if ($results == $password) {
+
+                // if ($row == false) {
+                if (password_verify($password, $results)) {
+ 
                 $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
                 error_log("Login Success!", 0);
                 header("Location: view.php" );
                 return;
 
             } else {
-                // echo $newpass;  
-                
-                //$2y$10$AROZauV7praHvYVyzR2/m.DVHuWHJnB9DFaqC7L66z3ogL.lu9XoW
-                
-                // echo ("hhhh");
-                // var_dump( $old_pass);
+   
                 echo 'Invalid password.';
                 $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
                 header("Location: login.php" );
