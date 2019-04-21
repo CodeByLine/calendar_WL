@@ -13,10 +13,10 @@
     $success = [];
 
     // If the user requested logout go back to index.php
-    if ( isset($_POST['logout']) ) {
-         header('Location: index.php');
-        return;
-    }
+    // if ( isset($_POST['logout']) ) {
+    //      header('Location: index.php');
+    //     return;
+    // }
 
     if ( isset($_POST['email']) && isset($_POST['password']) ) {
         
@@ -44,34 +44,22 @@
             } else {      
 
             $newpass = password_hash($password, PASSWORD_DEFAULT);
-       
-
             $stmt = $pdo->prepare("SELECT  `password` FROM `users` WHERE email = :uvw");
 
-             $stmt->execute(array(
+            $stmt->execute(array(
 
                 ":uvw" => $email));
-            // //     "xyz" => $password)); 
     
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $results = $row ['password'];
-                //     $results = $row;
+ 
                 echo($results);
                 echo($password);
                 echo($newpass);
-            //     print_r ($results);
-                // var_dump($row);
-            // print_r($stmt);
-            // $old_pass = $row['email'].'password';
-            // print_r ($row);
-            // $check = $row['password'];
-            // if ($results == $password) {
 
-                // if ($row == false) {
                 if (password_verify($password, $results)) {
  
                 $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
-                error_log("Login Success!", 0);
                 header("Location: view.php" );
                 return;
 
@@ -80,56 +68,9 @@
                 echo 'Invalid password.';
                 $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
                 header("Location: login.php" );
-                return;
-                
-            }    
-
-
-
-            }
-
-
-
-    // Below: Working  
-    //             function sqlPassword($password) {
-    //                 $pass = strtoupper(
-    //                         sha1(
-    //                                 sha1($password, true)
-    //                         )
-    //                 );
-    //                 $pass = '*' . $pass;
-    //                 return $pass;
-    //             }
-      
-    //             $newpass = sqlPassword($password);
-
-    //             $stmt = $pdo->prepare("SELECT  `password`  FROM `users` WHERE password = :uvw");
-            
-    //             $stmt->execute(array(
-
-    //                 ":uvw" => $newpass)); 
-                    
-    //                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    //                 $check = $row['password'];
-        
-    //             if ($newpass == $check) { 
-    //                 $email = htmlentities($_POST['email']);
-    //                 $_SESSION['email'] = $email;
-    //                 $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
-    //                 error_log("Login Success!", 0);
-    //                 header("Location: view.php" );
-    //                 return;
-        
-    //             } else {
-    //                 echo 'Invalid password.';
-    //                 $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
-    //                 header("Location: login.php" );
-    //                 return;
-    //             }    
-                
- 
-
-    // }
+                return;       
+            }   
+        }
 
 }
 
