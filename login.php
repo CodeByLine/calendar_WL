@@ -35,9 +35,9 @@
         $atsign = strpos($email, '@');
         if ($atsign == false) {
 
-            $_SESSION['message'] = "<p style = 'color:red'>SECRET: Did you enter the correct email address?</p>\n";
+            $_SESSION['message'] = "<p style = 'color:red'>SECRET: Incorrect username or password.</p>\n";
             // error_log("Username must have an at-sign (@).", 0);
-            error_log("Did you enter the correct email address?");
+            // error_log("Did you enter the correct email address?");
             header("Location: login.php");
             return;
 
@@ -69,7 +69,7 @@
             } else {
    
                 echo 'Invalid password.';
-                $_SESSION['message'] = "<p style = 'color:red'> SECRET: Password incorrect.</p>\n";
+                $_SESSION['message'] = "<p style = 'color:red'> Incorrect username or password.</p>\n";
                 header("Location: login.php" );
                 return;       
             }   
