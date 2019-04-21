@@ -57,7 +57,10 @@
                 echo($password);
                 echo($newpass);
 
-                if (password_verify($password, $results)) {
+            if (password_verify($password, $results)) {
+
+                $email = htmlentities($_POST['email']);
+                $_SESSION['email'] = $email;
  
                 $_SESSION['message'] = "<p style = 'color:green'>Login success.</p>\n";
                 header("Location: view.php" );

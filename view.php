@@ -9,7 +9,7 @@
     // if (!empty($_SESSION)){
 
         if (!isset($_SESSION['email'])){
-            // die("ACCESS DENIED");
+            die("ACCESS DENIED");
             header('Location: index.php');
             return;
           }
