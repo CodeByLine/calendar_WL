@@ -8,6 +8,10 @@
         header( 'Location: index.php' ) ;
     }
 
+    if ( isset($_POST['logout']) ) {
+      unset($_SESSION['email']);
+      header('Location: index.php');
+      return; }
 
     if ( isset($_POST['delete']) && isset($_POST['event_id']) ) {
 

@@ -113,11 +113,11 @@
     <br>
     <form method="post">
     <p>Event Name:
-    <input type="text" name="eventname" value="<?= $e ?>"></p>
+    <input type="text" name="eventname" value="<?=htmlentities($e);?>"></p>
     <p>Event Date:
-    <input type="text" name="eventdate" value="<?= $d ?>"></p>
+    <input type="text" name="eventdate" value="<?=htmlentities($d);?>"></p>
     <p>Additional Notes:
-    <input type="integer" name="eventnote" value="<?= $n ?>"></p>
+    <input type="integer" name="eventnote" value="<?=htmlentities($n);?>"></p>
     
     <input type="hidden" name="event_id" value="<?= ($row['event_id']) ?>">
     <p><input type="submit" value="Save"/>
