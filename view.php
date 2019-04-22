@@ -6,8 +6,6 @@
     $success = [];
 
 
-    // if (!empty($_SESSION)){
-
         if (!isset($_SESSION['email'])){
             die("ACCESS DENIED");
             header('Location: index.php');
@@ -60,7 +58,8 @@
         
     </style>
      <div class="container">
-        <h1>Wolf Lake's Events At A Glance– Summer 2019</h1>
+        <h1>Wolf Lake's Events At A Glance – Summer 2019</h1>
+
 <br>
      <?php
         if (isset($_SESSION['email'])){
@@ -78,36 +77,32 @@
                 echo("No such event found.");
             } else {
       
+               
+                echo('<table class="table table-striped" border="1" >'."\n");
+                echo ("<tr> <th>Event Name</th>  <th>Event Date</th>  <th>Additional Notes</th><th>Edit</th><th>Delete");
                 foreach ( $rows as $row ) {
-                    echo('<table class="table table-striped" border="1" >'."\n");
-                   echo "<tr><td>";
-                   
-                   echo(htmlentities($row['eventname']).("&nbsp; &nbsp;"));
+                echo("<tr><td>");  
+                echo(htmlentities($row['eventname']));
              
-                   echo("</td><td>");
-                   echo(htmlentities($row['eventdate']).("&nbsp; &nbsp;"));
-                   echo("</td><td>");
-                   echo(htmlentities($row['eventnote']).("&nbsp; &nbsp;"));
-                   echo("</td><td>");
+                echo("</td><td>");
+                echo(htmlentities($row['eventdate']));
+                echo("</td><td>");
+                echo(htmlentities($row['eventnote']));
+                echo("</td><td>");
                    
-                   echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');
-                   echo("</td><td>");
+                echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');
+                echo("</td><td>");
 
                 echo ('<a href="delete.php?event_id='.$row['event_id'].'">Delete</a>');
 
-                   echo("</td></tr>\n");
+                echo("</td></tr>\n");
                 echo('</table');
                 
                 } 
             }
         }
 
-        // else {
 
-        //     echo("hello");
-        // }
-
-     
  
     ?>
     <br>
@@ -119,6 +114,3 @@
      
      </body>
  </html>
-
-
- 
