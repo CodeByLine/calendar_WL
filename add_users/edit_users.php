@@ -131,7 +131,7 @@
     <input type="password" name="password" value="<?=$pd;?>"></p>
     
     <input type="hidden" name="user_id" value="<?= ($row['user_id']) ?>">
-    <p><input type="submit" value="update"></p>
+    <p><input type="submit" value="update user"></p>
     <input type="submit" name="cancel" value="Cancel">
     
 
@@ -140,11 +140,9 @@
         <br>
         <br>
         
-        <p><input type="submit" name="add" value="Add New User"> &nbsp; &nbsp; &nbsp; <input type="submit" name="view" value="View All Users">  &nbsp; &nbsp; &nbsp;
-        
-        <input type="submit" name="cancel" value="Cancel"> &nbsp; &nbsp; &nbsp; 
-        <input type="submit" name="logout" value="Logout"> </p>
-    </form>
+        <a href="add_users.php">add another user</a>
+        <a href="users.php">view all users</a>
+        <a href="../logout.php">logout</a>
  
 <br>
 <br>
