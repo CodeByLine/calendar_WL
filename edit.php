@@ -119,8 +119,8 @@
     <p>Additional Notes:
     <input type="integer" name="eventnote" value="<?=htmlentities($n);?>"></p>
     
-    <input type="hidden" name="event_id" value="<?= ($row['event_id']) ?>">
-    <p><input type="submit" value="Save"/>
+    <input type="hidden" name="event_id" value="<?= ($row['event_id']) ?>"></p>
+    <p><input type="submit" value="Save"></p>
     <input type="submit" name="cancel" value="Cancel">
     
     <!-- <a href="index.php">Cancel</a></p> -->
