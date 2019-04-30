@@ -79,24 +79,21 @@
       
                
                 echo('<table class="table table-striped" border="1" >'."\n");
-                echo ("<tr> <th>Username</th>  <th>Email</th> <th>Password</th> <th>Additional Notes</th><th>Edit</th><th>Delete");
+                echo ("<tr> <th>Event Name</th>  <th>Event Date</th> <th>Additional Notes</th><th>Edit</th><th>Delete");
                 foreach ( $rows as $row ) {
                 echo("<tr><td>");  
-                echo(htmlentities($row['username']));
+                echo(htmlentities($row['eventname']));
              
                 echo("</td><td>");
-                echo(htmlentities($row['email']));
+                echo(htmlentities($row['eventdate']));
                 echo("</td><td>");
-                echo(htmlentities($row['password']));
-                echo("</td><td>");
-
-                echo(htmlentities($row['note']));
-                echo("</td><td>");
-                   
-                echo ('<a href="edit.php?user_id='.$row['user_id'].'">Edit</a>');
+                echo(htmlentities($row['eventnote']));
                 echo("</td><td>");
 
-                echo ('<a href="delete.php?user_id='.$row['user_id'].'">Delete</a>');
+                echo ('<a href="edit.php?event_id='.$row['event_id'].'">Edit</a>');
+                echo("</td><td>");
+
+                echo ('<a href="delete.php?event_id='.$row['event_id'].'">Delete</a>');
 
                 echo("</td></tr>\n");
                 echo('</table');
