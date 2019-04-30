@@ -1,69 +1,19 @@
-
 <?php
-
     require_once "pdo.php";
     session_start();
 
+    if (isset($_SESSION['email'])){
+
     if (!empty($_SESSION['message'])) {
-        echo($_SESSION['message']);
+        echo $_SESSION['message'];
         unset($_SESSION['message']);
     }
 
-    $errors = [];
-    $success = [];
 
+        }
 
-    if ((!isset($_SESSION['user_id'])) || (!isset($_SESSION['name']))){
+?>
 
-        echo '<p><a href="login.php">Please log in</a></p>';    
-
-    } else {
-        // echo '<a href="add.php">Add New Entry</a>';
-        
-        echo '&nbsp; &nbsp; &nbsp; Welcome! &nbsp; &nbsp; &nbsp; <a href="logout.php">Logout</a>' ; 
-
-        echo('<table class="table table-striped" border="1" >'."\n");
-
-        // profile_id, user_id, first_name, last_name, email, headline, summary
-
-        $sql = ("SELECT * FROM Profile"); // WHERE profile_id = :pd, user_id = :ud, first_name = :fn, last_name = :ln, email = :em, headline = :he, summary = :su");
-        $stmt = $pdo->query($sql);
-        $stmt->execute(array(
-
-        ));
-
-        echo "<tr><th>Profile Id</th><th>User Id</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Headline</th> <th>Summary</th> <th>Action";
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo("</th><tr><td>");  
-        echo(htmlentities($row['profile_id']));
-        echo("</td><td>");
-        echo(htmlentities($row['user_id']));    
-        echo("</td><td>");
-        echo(htmlentities($row['first_name']));
-        echo("</td><td>");
-        echo(htmlentities($row['last_name']));
-        echo("</td><td>");
-        echo(htmlentities($row['email']));
-        echo("</td><td>");
-        echo(htmlentities($row['headline']));
-        echo("</td><td>");
-        echo(htmlentities($row['summary']));
-        echo("</td><td>");
-        // echo ('<a href="view.php?profile_id='.$row['profile_id'].'">View</a>' );
-        echo ('<a href="edit.php?profile_id='.$row['profile_id'].'">Edit</a>  |  ' );
-
-        echo('<a href="delete.php?profile_id='.$row['profile_id'].'">Delete</a>');
-        echo("</td></tr>\n");
-        echo('</table');
-        echo '<p></p>';
-    }
-}
-        // echo("</td><td>");
-        // echo ('<a href="edit.php?user_id='.$row['profile_id'].'">Edit</a> |');  // GET 
-        // echo ('<a href="delete.php?user_id='.$row['profile_id'].'">Delete</a> |');  // GET 
-    ?>
-    <!-- END: View one -->
 
 
 <!DOCTYPE html>
@@ -72,14 +22,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Yumei Leventhal index.php</title>
+    <title>Events Calendar</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 <body>
-<style>
+
+<div class="container">
+    <h1><center>Wolf Lake's Events Calendar </center></h1>
+    <br>
+        <h3><center>Summer 2019</center></h3>
+
+    <!-- <br> <a href="login.php">Login</a> -->
+   <br>
+
+<br>
+   <style>
         table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
@@ -87,31 +47,43 @@
         th, td {
         padding: 10px;
         } 
-</style>
+       
+        
+    </style>
 
+    <?php   
+ 
 
+        $stmt = $pdo->query("SELECT event_id, eventname, eventdate, eventnote FROM events");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+            if ($rows == false) {
+                echo("No event found here");
+            } else {
+      
 
-<div class="container">
-    <h1><center> Yumei Leventhal Resume Registry</center></h1>
-    <p><a href="login.php">Please log in</a></p>
-<br>
-   
+                echo('<table class="table table-striped" border="1" >'."\n");
+                echo "<tr><th>Event Name</th>  <th>Event Date</th> <th>Additional Notes";
+                foreach ( $rows as $row ) {
+                 echo("</th><tr><td>");  
+                   echo(htmlentities($row['eventname']));
+               
+                   echo("</td><td>");
+                   echo(htmlentities($row['eventdate']));
+                   echo("</td><td>");
+                   echo(htmlentities($row['eventnote']));
 
-<!-- BEGIN: View one  -->
-<!-- <a href="index.php">Back to Index</a> -->
+                   echo("</td></tr>\n");
+                echo('</table');
+  
+          } 
 
-
-<br>
- <br>
-
-            <p>'My name is Ozymandias, king of kings;</p>
-            <p>Look on my works, ye Mighty, and despair!</p>
-            <p>Nothing beside remains. Round the decay</p>
-            <p>Of that colossal wreck, boundless and bare</p>
-            <p>The lone and level sands stretch far away.</p>
-            <!-- <a href="add.php">Add New Entry</a> -->
+        }
+    ?>
     <br>
-    <a href="add.php">Add New Entry</a>
+    <br>
+
     </div>  
 </body>
 </html>
+
