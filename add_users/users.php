@@ -61,8 +61,8 @@
 <?php
 
     echo('<table class="table table-striped" border="1" >'."\n");
-    echo ("<tr> <th>User Name</th>  <th>Email</th><th>Password");
-    $stmt = $pdo->query("SELECT username, email, password, user_id FROM users");
+    echo ("<tr> <th>User Name</th>  <th>Email</th><th>Password</th><th>Note</th><th>Edit");
+    $stmt = $pdo->query("SELECT username, email, password, note, user_id FROM users");
     while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
         echo ("<tr><td>");
@@ -71,18 +71,20 @@
         echo($row['email']);
         echo("</td><td>");
         echo($row['password']);
+        echo("</td><td>");
+        echo($row['note']);
+        echo("</td><td>");
         // echo("</td><td>");
-        // echo('<a href="edit.php?user_id='.$row['user_id'].'">Edit</a>');
+        echo('<a href="../add_users/edit.php?user_id='.$row['user_id'].'">Edit</a>');
         // echo("</td><td>");
         // echo('<a href="delete.php?user_id='.$row['user_id'].'">Delete</a>');
         echo("</td></tr>\n");
     }
 
-
     ?>
 </table>
-<br>
-<!-- <a href="add_users.php">Add New</a> -->
+
+<a href="../add_users/add_users.php">Add Another User</a>
 
 </div>
 </body>

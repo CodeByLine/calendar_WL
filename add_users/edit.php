@@ -27,19 +27,19 @@
     $errors = [];
     $success = [];
 
-    if ( isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
+    if ( isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['note']))  {
 
          
         if (strlen($_POST['username']) < 1) {
             $_SESSION['message'] = "<p style = 'color:red'>SECRET: Username is required.</p>\n";
-            header("Location: add_users.php");
+            header("Location: add_users/add_users.php");
             return;
 
         }
 
         if (strlen($_POST['email']) < 1) {
-            $_SESSION['message'] = "<p style = 'color:red'>SECRET: Event date is required.</p>\n";
-            header("Location: add_users.php");
+            $_SESSION['message'] = "<p style = 'color:red'>SECRET: User email is required.</p>\n";
+            header("Location: add_users/add_users.php");
             return;
 
         }
@@ -47,7 +47,7 @@
 
         if (empty($_POST['password'])) {
             $_SESSION['message'] = "<p style = 'color:red'>Password is required.</p>\n";
-            header("Location: add_users.php");
+            header("Location: ../add_users/add_users.php");
             return;
 
          }      
@@ -60,20 +60,21 @@
         // $password = PASSWORD_HASH($p, PASSWORD_DEFAULT);
 
             $sql = "UPDATE users SET username = :username,
-                    email = :email, password = :password
+                    email = :email, password = :password, note = :note
                     WHERE user_id = :user_id"; 
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array(
                 ':user_id' => $_POST['user_id'],
                 ':username' => $_POST['username'],
                 ':email' => $_POST['email'],
-                ':password' => $_POST['password']));
+                ':password' => $_POST['password'],
+                ':note' => $_POST['note']));
 
             // $row = $stmt->fetch(PDO::FETCH_ASSOC);
             // $_SESSION["success"] = "User information updated";
             // $_SESSION["message"] = "Record added";
             error_log("Record updated.", 0);
-            header("Location: users.php");
+            header("Location: ../add_users/users.php");
             return;   
         }
     }
@@ -82,13 +83,14 @@
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row == false) {
         $_SESSION['error'] = 'Something is wrong here';
-        header('Location: users.php');
+        header('Location: ../add_users/users.php');
         return;
     } else {
         $un = htmlentities($row['username']);
         $em = htmlentities($row['email']);
         $pd = htmlentities($row['password']);
-        $event_id = $row['user_id'];
+        $note = htmlentities($row['note']);
+        $user_id = $row['user_id'];
     }
 
 
@@ -100,7 +102,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Wolf Lake's Events Edit Page</title>
+    <title>Wolf Lake's Edit User Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" media="screen" href="../main.css">
@@ -123,12 +125,14 @@
     <br>
 
     <form method="post">
-    <p>Edit User:
+    <p>User Name:
     <input type="text" name="username" value="<?=$un;?>"></p>
-    <p>Event Date:
+    <p>Email:
     <input type="email" name="email" value="<?=$em;?>"></p>
-    <p>Additional Notes:
+    <p>Password:
     <input type="password" name="password" value="<?=$pd;?>"></p>
+    <p>Note:
+    <input type="note" name="note" value="<?=$note;?>"></p>
     
     <input type="hidden" name="user_id" value="<?= ($row['user_id']) ?>">
     <p><input type="submit" value="update user"></p>
@@ -164,8 +168,8 @@
 
 
     echo('<table class="table table-striped" border="1" >'."\n");
-    echo ("<tr> <th>User Name</th>  <th>Email</th>  <th>Password</th><th>Edit</th><th>Delete");
-    $stmt = $pdo->query("SELECT username, email, password, user_id FROM users");
+    echo ("<tr> <th>User Name</th>  <th>Email</th>  <th>Password</th><th>Note</th><th>Edit|Delete");
+    $stmt = $pdo->query("SELECT username, email, password, note, user_id FROM users");
     while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
         echo "<tr><td>";
@@ -175,9 +179,9 @@
         echo("</td><td>");
         echo(htmlentities($row['password']));
         echo("</td><td>");
-        echo('<a href="edit.php?user_id='.$row['user_id'].'">Edit</a>');
+        echo(htmlentities($row['note']));
         echo("</td><td>");
-        echo('<a href="delete.php?user_id='.$row['user_id'].'">Delete</a>');
+        echo('<a href="../add_users/edit.php?user_id='.$row['user_id'].'">Edit</a> | <a href="../add_users/delete.php?user_id='.$row['user_id'].'">Delete</a>');
         echo("</td></tr>\n");
     }
 

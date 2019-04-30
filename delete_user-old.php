@@ -1,11 +1,11 @@
 <?php
 
-    require_once "../pdo.php";
+    require_once "pdo.php";
     session_start();
 
     if (!isset($_SESSION['email'])){
         die("ACCESS DENIED");
-        header( 'Location: ../index.php' ) ;
+        header( 'Location: index.php' ) ;
     }
 
     if ( isset($_POST['cancel']) ) {
@@ -14,7 +14,7 @@
 
     if ( isset($_POST['logout']) ) {
       unset($_SESSION['email']);
-      header('Location: ../index.php');
+      header('Location: index.php');
       return; }
 
 
@@ -22,24 +22,24 @@
 
     if ( isset($_POST['delete']) && isset($_POST['user_id']) ) {
 
-        $sql = "DELETE FROM events WHERE event_id = :zip";
+        $sql = "DELETE FROM users WHERE user_id = :zip";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array(':zip' => $_POST['user_id']));
         $_SESSION['success'] = 'Record deleted';
-        header( 'Location: users.php' ) ;
+        header( 'Location: view.php' ) ;
         return;
     }
 
 
-      // Guardian: Make sure that event_id is present
+      // Guardian: Make sure that user_id is present
       if ( ! isset($_GET['user_id']) ) {
-        $_SESSION['error'] = "Event not listed";
-        header('Location: users.php');
+        $_SESSION['error'] = "User not listed";
+        header('Location: view.php');
         return;
       }
 
-      $stmt = $pdo->prepare("SELECT username, user_id FROM users where event_id = :xyz");
-      $stmt->execute(array(":xyz" => $_GET['user_id']));
+      $stmt = $pdo->prepare("SELECT eventname, event_id FROM events where event_id = :xyz");
+      $stmt->execute(array(":xyz" => $_GET['event_id']));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       if ( $row === false ) {
           $_SESSION['error'] = 'Event information incorrect';
