@@ -152,7 +152,7 @@
 
 
   <br><br>
-  <p> Note: The date/time must be entered as <span style='color: red'> 2019-08-30 00:18:00  </span> (YYYY-MM-DD HH-MM-SS). Don't forget entering "00" for seconds. </p>
+  <p> Note: The date/time must be entered as <span style='color: red'> 2019-08-30 09:30:00  </span> (YYYY-MM-DD HH-MM-SS). Don't forget entering "00" for seconds. </p>
 
 </div>
 </body>

@@ -8,25 +8,32 @@
         header( 'Location: index.php' ) ;
     }
 
+    if ( isset($_POST['cancel']) ) {
+        header('Location: add_users.php');
+        return; }
+
     if ( isset($_POST['logout']) ) {
       unset($_SESSION['email']);
       header('Location: index.php');
       return; }
 
-    if ( isset($_POST['delete']) && isset($_POST['event_id']) ) {
 
-        $sql = "DELETE FROM events WHERE event_id = :zip";
+
+
+    if ( isset($_POST['delete']) && isset($_POST['user_id']) ) {
+
+        $sql = "DELETE FROM users WHERE user_id = :zip";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':zip' => $_POST['event_id']));
+        $stmt->execute(array(':zip' => $_POST['user_id']));
         $_SESSION['success'] = 'Record deleted';
         header( 'Location: view.php' ) ;
         return;
     }
 
 
-      // Guardian: Make sure that event_id is present
-      if ( ! isset($_GET['event_id']) ) {
-        $_SESSION['error'] = "Event not listed";
+      // Guardian: Make sure that user_id is present
+      if ( ! isset($_GET['user_id']) ) {
+        $_SESSION['error'] = "User not listed";
         header('Location: view.php');
         return;
       }
@@ -59,10 +66,10 @@
 
 <div class="container">
 
-  <p class="alert-danger">Confirm: Deleting event "<?= htmlentities($row['eventname'])."?"; ?>"</p>
+  <p class="alert-danger">Confirm: Deleting user "<?= htmlentities($row['username'])."?"; ?>"</p>
 
   <form method="post">
-    <input type="hidden" name="event_id" value="<?= ($row['event_id']); ?>">
+    <input type="hidden" name="user_id" value="<?= ($row['user_id']); ?>">
     <input type="submit" value="Delete" name="delete"> &nbsp; &nbsp; &nbsp;
     <a href="index.php" button type="button" class="btn">Cancel</button></a>
 

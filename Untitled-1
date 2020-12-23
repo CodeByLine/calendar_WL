@@ -1,0 +1,22 @@
+ 
+ 
+May 18 @ 9:00 am - 12:00 pm	
+The Club House 
+
+
+
+INSERT INTO `events` (`event_id`, `eventname`, `eventdate`, `eventnote`) VALUES (NULL, 'Beach Clean-up', '2019-05-18 00:09:00', '9am-12pm' at the Club House);
+
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES (NULL, 'nam', 'nam@umich.edu', password('Jeopardy09!'));
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES (NULL, 'kevin', 'kdoyle@gmail.com', 'Jeopardy02019!');
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES (NULL, 'mike', 'mkav2010@gmail.com ', '$2y$10$TAwCaetVsk.ibtZ1ROx4yuVYB6DpcezQeoOpMA.2Eo9wy.VbE5HQ2 ');
+
+
+<?php
+
+
+$pdo = new PDO('mysql:host=localhost;port=8889;dbname=calendar_WL', 
+   'fwred', 'zappertapper890');
